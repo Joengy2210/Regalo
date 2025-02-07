@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta para Asura</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #fce4ec;
+      font-family: Arial, sans-serif;
+      perspective: 1000px;
+      overflow: hidden;
+    }
+    /* Contenedor del sobre */
+    .envelope {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+    }
+    /* Cuerpo del sobre (parte inferior) */
+    .envelope-body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #d32f2f;
+      border: 2px solid #b71c1c;
+      border-radius: 5px;
+      z-index: 1;
+    }
+    /* Tapa del sobre (la solapa que se abre) */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background-color: #b71c1c;
+      border: 2px solid #b71c1c;
+      border-bottom: none;
+      transform-origin: bottom;
+      transition: transform 0.6s ease-in-out;
+      z-index: 2;
+    }
+    /* Al abrir el sobre, la tapa rota hacia atrás */
+    .envelope.open .envelope-flap {
+      transform: rotateX(-180deg);
+    }
+    /* Texto en el sobre */
+    .envelope .text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: bold;
+      z-index: 3;
+      pointer-events: none;
+    }
+    /* Carta o mensaje que se muestra tras abrir el sobre */
+    .letter {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      padding: 20px;
+      background: white;
+      border: 2px solid #c62828;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+    .letter.show {
+      display: block;
+      opacity: 1;
+    }
+    /* Corazones flotantes */
+    .heart {
+      position: absolute;
+      color: red;
+      font-size: 30px;
+      animation: float 4s infinite ease-in-out;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      50% { transform: translateY(-50px) scale(1.2); opacity: 0.8; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sobre cerrado -->
+  <div class="envelope" onclick="openEnvelope()">
+    <div class="envelope-body"></div>
+    <div class="envelope-flap"></div>
+    <div class="text">Haz clic para abrir</div>
+  </div>
+  <!-- Carta / Mensaje romántico -->
+  <div class="letter" id="letter">
+    <h2>Asura</h2>
+    <p>Desde que te conocí, cada día es más especial. Tu sonrisa ilumina mi mundo y mi corazón late más fuerte por ti. ❤️</p>
+  </div>
+  <script>
+    function openEnvelope() {
+      const envelope = document.querySelector('.envelope');
+      envelope.classList.add('open');
+      // Espera a que la animación termine (600ms) para ocultar el sobre y mostrar la carta
+      setTimeout(() => {
+        envelope.style.display = 'none';
+        document.getElementById('letter').classList.add('show');
+        createHearts();
+      }, 600);
+    }
+    
+    function createHearts() {
+      for (let i = 0; i < 10; i++) {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+        heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+    }
+  </script>
+</body>
+</html>
